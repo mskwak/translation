@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+  <luceneMatchVersion>5.5.2</luceneMatchVersion>
+  <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.StandardDirectoryFactory}"/>
+  <dataDir>/opt/solr-5.5.2/server/solr/multicore/tbx/data</dataDir>
+  <!-- <dataDir>${solr.appletdoc.data.dir:}</dataDir> -->
+
+  <updateHandler class="solr.DirectUpdateHandler2">
+    <updateLog>
+      <str name="dir">/opt/solr-5.5.2/server/solr/multicore/tbx/data</str>
+    </updateLog>
+  </updateHandler>
+
+  <requestHandler name="/get" class="solr.RealTimeGetHandler">
+    <lst name="defaults">
+      <str name="omitHeader">true</str>
+    </lst>
+  </requestHandler>
+  
+  <requestHandler name="/replication" class="solr.ReplicationHandler" startup="lazy" /> 
+
+  <requestDispatcher handleSelect="true" >
+    <requestParsers enableRemoteStreaming="false" multipartUploadLimitInKB="2048" />
+  </requestDispatcher>
+  
+  <!-- <requestHandler name="standard" class="solr.StandardRequestHandler" default="true" /> -->
+
+ <!--
+      fl: 리턴할 필드 리스트
+      df:
+ -->
+  <requestHandler name="select" class="solr.SearchHandler" default="true">
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <str name="fl">id, termEntryId, langSet, country, descrip, term</str>
+      <str name="df">term</str>
+      <str name="hl">true</str>
+      <str name="hl.fl">term</str>
+      <int name="rows">20</int>
+      <!-- <str name="sort">create_date_date desc</str> -->
+    </lst>
+  </requestHandler>
+  
+  <requestHandler name="/analysis/field" startup="lazy" class="solr.FieldAnalysisRequestHandler" />
+  <requestHandler name="/update" class="solr.UpdateRequestHandler" />
+  <requestHandler name="/admin/" class="org.apache.solr.handler.admin.AdminHandlers" />
+
+  <requestHandler name="/admin/ping" class="solr.PingRequestHandler">
+    <lst name="invariants">
+      <str name="q">solrpingquery</str>
+    </lst>
+    <lst name="defaults">
+      <str name="echoParams">all</str>
+    </lst>
+  </requestHandler>
+  
+  <!-- config for the admin interface --> 
+  <admin>
+    <defaultQuery>solr</defaultQuery>
+  </admin>
+</config>
+

@@ -1,0 +1,161 @@
+@charset "utf-8";
+
+html,body{width:100%; height:100%; margin: 0 }
+ 
+
+:focus {   }
+
+::selection{
+    background:#666;
+    color: #FFF;
+    text-shadow: none;
+}
+
+::-moz-selection{
+    background:#666;
+    color: #FFF;
+    text-shadow: none;
+}
+
+::-webkit-selection {
+    background:#666;
+    color: #FFF;
+    text-shadow: none;
+}
+
+.reset, .reset *
+{
+    font-size: 100%; 
+	font-weight: inherit; 
+	font-style: inherit; 
+	vertical-align: baseline; 
+	white-space: normal;
+	text-align: left; 
+	margin: 0; 
+	padding: 0; 
+	border: 0 none;  
+	background: transparent; 
+ 
+}
+
+.reset img { vertical-align: middle; }
+.reset article, .reset aside, .reset details, .reset figcaption, .reset figure,
+.reset footer, .reset header, .reset hgroup, .reset menu, .reset nav, .reset section { display:block; }
+.reset ul, .reset ol { list-style:none;}
+
+.reset table {
+    border-collapse:collapse;
+    border-spacing:0;
+    width:100%;
+}
+ 
+.reset input, .reset select {
+    vertical-align:middle;
+}
+
+.reset input:focus, .reset select:focus { outline: none; }
+
+button:hover, a:hover { cursor: pointer; }
+
+.clear { clear: both;  }
+
+.clearFix:after { content: ""; display: block; clear: both; }
+.right { float: right; }
+.left { float: left; }
+
+a { text-decoration:none; }
+
+body { font-size: 14px; min-width: 1280px; color: #333; font-family: 'Source Sans Pro', sans-serif; }
+
+.wrap {   }
+
+.setWidth { width: 940px; margin: 0 auto; }
+
+#header {   position: relative; } 
+#header h1 { float:left; }
+#header h1 a { width:240px; height: 50px; margin: 10px 0; background: url(../images/logo.png) left center no-repeat;  ; overflow:hidden; text-indent:-9999px; display:block; }
+ 
+ 
+#topMenu { overflow:hidden; display:block;  padding:30px 0; overflow: hidden; float: right; }
+#topMenu li { float:left; padding:0 20px; color:#666; height: 10px; border-left: 1px solid #ddd; }
+#topMenu li:first-child { border:none; }
+#topMenu li a { color:#666; font-size: 12px; line-height:20px; height: 20px; display: block; margin-top: -5px;  }
+#topMenu li a:hover,
+#topMenu li a:focus { text-decoration: underline; }
+#topMenu li.link { padding-right: 0; }
+/* #topMenu li.link a { color: #0055ab; padding-right: 10px; background: url(../images/head_link.gif) right center no-repeat; font-weight: bold; } */
+#topMenu li.link a { color: #0055ab; padding-right: 10px; font-weight: bold; }
+
+.gnbWrap { overflow: hidden; background: #fafafa; border-top:1px solid #ddd;  border-bottom:1px solid #ddd; clear: both; }
+
+#gnb { overflow:hidden; border-left: 1px solid #ddd; }
+#gnb li { display: block; float: left; width: 33.3%; }
+#gnb li a { display:block; line-height:50px;  font-size:16px; border-right: 1px solid #ddd; color:#555; text-align: center; transition: all 0.3s;}
+#gnb li a i { font-size: 20px; vertical-align: middle; margin-bottom: 3px; font-weight: normal !important; }
+#gnb li a:hover, 
+#gnb li a:focus { background:#eee; color: #3773F0;  }
+ 
+#gnb li.current a { background:#fff; color:#3773F0; font-weight: bold; } 
+
+ 
+#subHeader {  position: relative; overflow: hidden; padding: 40px 0px 30px;    }
+#subHeader h2.locationTitle { font-weight: 400; font-size: 32px; line-height: 1em; color:#3773F0; text-align: center;  } 
+#subHeader h2.locationTitle i { vertical-align: middle; margin-bottom: 5px; }
+ 
+.contentWrap { position: relative; }
+
+.contentWrap .contentBody { padding: 0 0 60px; }
+
+#footer { border-top:1px solid #ddd; }
+#footer .footerContent {  background:url(../images/logo_footer.png) left center no-repeat; background-size: 180px auto; padding: 20px 0 20px 200px; box-sizing: border-box; text-align: right;}
+#footer p { font-size:12px; color:#999; line-height:1.4em; } 
+#footer p b {  }
+
+
+#loginBody { background: #fafafa; }
+
+#loginWrap { position: fixed; left: 50%; top:50%; width: 400px; margin-left: -200px; margin-top: -150px;  }
+
+#loginWrap p { text-align: center; line-height: 1.4em; color: #999; font-size: 12px; }
+
+
+.loginForm { border:1px solid #ccc; margin-bottom: 20px; padding: 30px 40px 30px; background: #fff; }
+.loginForm h1 { text-align: center;  padding: 10px 5px 20px 0; }
+.loginForm table td { padding-bottom: 10px; }
+.loginForm table td .textInput { font-size: 14px;   }
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

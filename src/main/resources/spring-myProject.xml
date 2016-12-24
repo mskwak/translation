@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring
+		http://mybatis.org/schema/mybatis-spring.xsd"
+	default-autowire="byName">
+
+	<context:annotation-config />
+	<mvc:annotation-driven />
+	<mvc:default-servlet-handler/>
+	<context:component-scan base-package="kr.co.easymanual" />
+	<!-- 아래 설정은 @Transactional 어노테이션이 적용된 스프링 빈에 실제로 트랜잭션을 적용하기 위한 설정이지만, @EnableTransactionManagement 이 선언되어 있으면 필요치 않다. -->
+	<!-- <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />  -->
+	<!-- <tx:annotation-driven proxy-target-class="true" /> -->
+	
+	<import resource="classpath*:spring-viewResolver/spring-viewResolver.xml"/>
+	<import resource="classpath*:spring-multipartResolver.xml"/>
+	
+	<!-- https://objectpartners.com/2010/08/23/gaining-access-to-the-spring-context-in-non-spring-managed-classes/ -->
+	<bean id="springBean" class="kr.co.easymanual.utils.SpringBean" />
+
+	<!-- <bean id="messageConverter" ~~ 는 @ResponseBody 를 사용하기 위한 설정이다. -->
+	<!-- pom.xml에 <artifactId>gson</artifactId> 설정 필요
+	<bean id="messageConverter" class="org.springframework.http.converter.json.GsonHttpMessageConverter"/>
+	-->
+ 	
+ 	<!-- pom.xml에 <artifactId>jackson-core</artifactId> 및 jackson-databind 설정 필요하다. -->
+ 	<bean id="messageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+ 	
+ 	<!-- 스프링 4.1 버전 부터 message converter를 기본으로 지원하기 시작하면서 부터 아래와 같은 RequestMappingHandlerAdapter 설정은 필요 없다는 설명 
+ 	http://blog.reeze.com/entry/spring41-%EC%97%90%EC%84%9C-response%EB%A5%BC-Json%ED%8F%AC%EB%A9%A7%EC%9C%BC%EB%A1%9C-%EB%B3%80%ED%99%98%ED%95%98%EC%97%AC-%EC%B6%9C%EB%A0%A5-%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="messageConverters">
+		  <list>
+			<ref bean="gsonHttpMessageConverter"/>
+		  </list>
+		</property>
+	</bean>
+	-->
+
+	
+	
+	
+
+</beans>

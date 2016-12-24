@@ -1,0 +1,6 @@
+attachments.directory=/opt/easymanual/attachment
+datasource.driver.classname=org.postgresql.Driver
+datasource.url=jdbc:postgresql://127.0.0.1:5432/easymanual
+datasource.username=easymanual
+datasource.password=easymanual
+solr.server.address=127.0.0.1

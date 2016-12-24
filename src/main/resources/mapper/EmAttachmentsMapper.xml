@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.co.easymanual.dao.EmAttachmentsMapper" >
+  <resultMap id="BaseResultMap" type="kr.co.easymanual.model.EmAttachments" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="langset" property="langset" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="hash_name" property="hashName" jdbcType="VARCHAR" />
+    <result column="path" property="path" jdbcType="VARCHAR" />
+    <result column="extension" property="extension" jdbcType="VARCHAR" />
+    <result column="size" property="size" jdbcType="BIGINT" />
+    <result column="uploader" property="uploader" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, langset, name, hash_name, path, extension, size, uploader, created_time, updated_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    SELECT <include refid="Base_Column_List" /> FROM em_attachments WHERE id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    DELETE FROM em_attachments WHERE id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="kr.co.easymanual.model.EmAttachments" >
+    INSERT INTO em_attachments (id, langset, name, hash_name, path, extension, size, uploader, created_time, updated_time)
+    VALUES (#{id,jdbcType=INTEGER} #{langset,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{hashName,jdbcType=VARCHAR}, 
+      #{path,jdbcType=VARCHAR}, #{extension,jdbcType=VARCHAR}, #{size,jdbcType=BIGINT}, #{uploader,jdbcType=VARCHAR}
+      #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="kr.co.easymanual.model.EmAttachments" >
+    INSERT INTO em_attachments
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >id, </if>
+      <if test="langset != null" >langset, </if>
+      <if test="name != null" >name, </if>
+      <if test="hashName != null" >hash_name, </if>
+      <if test="path != null" >path, </if>
+      <if test="extension != null" >extension, </if>
+      <if test="size != null" >size, </if>
+      <if test="uploader != null" >uploader, </if>
+      <if test="createdTime != null" >created_time, </if>
+      <if test="updatedTime != null" >updated_time, </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" > #{id,jdbcType=INTEGER}, </if>
+      <if test="langset != null" > #{langset,jdbcType=VARCHAR}, </if>
+      <if test="name != null" > #{name,jdbcType=VARCHAR}, </if>
+      <if test="hashName != null" > #{hashName,jdbcType=VARCHAR}, </if>
+      <if test="path != null" > #{path,jdbcType=VARCHAR}, </if>
+      <if test="extension != null" > #{extension,jdbcType=VARCHAR}, </if>
+      <if test="size != null" > #{size,jdbcType=BIGINT}, </if>
+      <if test="uploader != null" > #{uploader,jdbcType=VARCHAR}, </if>
+      <if test="createdTime != null" > #{createdTime,jdbcType=TIMESTAMP}, </if>
+      <if test="updatedTime != null" > #{updatedTime,jdbcType=TIMESTAMP}, </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="kr.co.easymanual.model.EmAttachments" >
+    UPDATE em_attachments
+    <set >
+      <if test="langset != null" > langset = #{langset,jdbcType=VARCHAR}, </if>
+      <if test="name != null" > name = #{name,jdbcType=VARCHAR}, </if>
+      <if test="hashName != null" > hash_name = #{hashName,jdbcType=VARCHAR}, </if>
+      <if test="path != null" > path = #{path,jdbcType=VARCHAR}, </if>
+      <if test="extension != null" > extension = #{extension,jdbcType=VARCHAR}, </if>
+      <if test="size != null" > size = #{size,jdbcType=BIGINT}, </if>
+      <if test="uploader != null" > uploader = #{uploader,jdbcType=VARCHAR}, </if>
+      <if test="createdTime != null" > created_time = #{createdTime,jdbcType=TIMESTAMP}, </if>
+      <if test="updatedTime != null" > updated_time = #{updatedTime,jdbcType=TIMESTAMP}, </if>
+    </set>
+    WHERE id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="kr.co.easymanual.model.EmAttachments" >
+    UPDATE em_attachments SET 
+      langset = #{langset,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      hash_name = #{hashName,jdbcType=VARCHAR},
+      path = #{path,jdbcType=VARCHAR},
+      extension = #{extension,jdbcType=VARCHAR},
+      size = #{size,jdbcType=BIGINT},
+      uploader = #{uploader,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+    WHERE id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- resultType 은 맵핑될 클래스 명을 쓰는 것이고 resultMap 은 자기가 원하는 POJO 클래스에 매핑 시킬 수 있습니다. -->
+  <select id="selectAll" resultType="java.util.HashMap">
+    SELECT <include refid="Base_Column_List" /> FROM em_attachments
+  </select>
+  
+  <!-- List<EmAttachments> selectAllByField(@Param("fieldName") String fieldName, @Param("sort") String sort); -->
+  <select id="selectAllByField" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+    SELECT <include refid="Base_Column_List" /> FROM em_attachments ORDER BY ${fieldName} ${sort} 
+  </select>  
+
+  <select id="selectByHashName" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" /> FROM em_attachments WHERE hash_name = #{hashName,jdbcType=VARCHAR}
+  </select>
+
+  <!-- 동일한 파일 이름을 갖는 레코드에 대한 중복 제거를 위해 order by created_time asc 를 사용하여 가장 오래된 레코드가 리스트의 앞에 위치하도록 했다.
+  	리스트 상의 맨 앞의 요소는 나중에 뒤에 오는 요소에 의해 덮어쓰기 되면서 사라진다. 결과적으로 가장 최근의 데이터가 맵에 들어간다. -->
+  <select id="selectByLangSet" parameterType="java.util.List" resultType="kr.co.easymanual.model.EmAttachments">
+    SELECT b.* FROM em_langset a INNER JOIN em_attachments b ON a.id = b.id WHERE a.langset IN 
+    <foreach item="item" index="index" collection="list" open="(" separator="," close=") ORDER BY created_time ASC"> 
+		#{item}
+	</foreach>
+  </select>
+  
+<!-- 
+  <select id="selectCurrentVal" resultType="java.lang.Integer">
+    SELECT CURRVAL('em_attachments_id_seq');
+  </select>
+
+  <select id="selectNextVal" resultType="java.lang.Integer">
+    SELECT NEXTVAL('em_attachments_id_seq');
+  </select>
+-->
+
+	
+</mapper>

@@ -1,0 +1,87 @@
+<?xml version="1.0" ?>
+<schema name="TBX Index Configuration" version="1.1">
+  <types>
+    <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="double" class="solr.TrieDoubleField" />
+    <fieldType name="date" class="solr.TrieDateField" omitNorms="true" precisionStep="0" positionIncrementGap="0"/>
+    <fieldtype name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true"/>
+    <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true" omitNorms="true"/>
+    <fieldType name="uuid" class="solr.UUIDField" indexed="true" />
+
+    <fieldType name="text_cjk" class="solr.TextField">
+        <analyzer>
+            <charFilter class="solr.HTMLStripCharFilterFactory"/>
+            <tokenizer class="solr.StandardTokenizerFactory" />
+            <filter class="solr.WordDelimiterFilterFactory" splitOnCaseChange="1" splitOnNumerics="0"/>
+            <filter class="solr.CJKWidthFilterFactory"/>
+            <filter class="solr.CJKBigramFilterFactory" han="true" hiragana="true" katakana="true" hangul="true" outputUnigrams="false" />
+            <filter class="solr.LowerCaseFilterFactory"/>
+        </analyzer>
+    </fieldType>
+
+    <!-- StrField 필드는 대소무시가 안된다. 이유 파악 필요 -->
+    <fieldType name="text_langSet" class="solr.TextField">
+        <analyzer>
+            <tokenizer class="solr.StandardTokenizerFactory" />
+            <filter class="solr.LowerCaseFilterFactory"/>
+        </analyzer>
+    </fieldType>
+  </types>
+
+
+
+ <fields>
+  <field name="id" type="string" indexed="true" stored="true" required="true"/>
+  <field name="termEntryId" type="string" indexed="true" stored="true" multiValued="false" required="true"/>
+  <field name="langSet" type="text_langSet" indexed="true" stored="true" multiValued="false"/>
+  <field name="country" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="descrip" type="text_cjk" indexed="true" stored="true" multiValued="false" /> 
+  <field name="term" type="text_cjk" indexed="true" stored="true" multiValued="false" /> 
+
+  <field name="textContent" type="text_cjk" indexed="true" stored="false" required="false" multiValued="true"/>
+  <field name="_version_" type="long" indexed="true" stored="true"/>
+  <field name="_root_" type="string" indexed="true" stored="false"/>
+
+<!--
+  <field name="valuesAsJson" type="string" indexed="false" stored="true"/>
+
+  <dynamicField name="*_string" type="string" indexed="true" stored="false" docValues="true"/>
+  <dynamicField name="*_long" type="long" indexed="true" stored="false" docValues="true"/>
+  <dynamicField name="*_double" type="double" indexed="true" stored="true" docValues="true"/>
+  <dynamicField name="*_date" type="date" indexed="true" stored="false" docValues="true"/>
+  <dynamicField name="*_text" type="text_cjk" indexed="true" stored="false"/>
+  <dynamicField name="*_longs" type="long" indexed="true" stored="false" multiValued="true"/>
+
+  <dynamicField name="*_doubles" type="double" indexed="true" stored="true" multiValued="true"/>
+  <dynamicField name="*_strings" type="string" indexed="true" stored="false" multiValued="true"/>
+  <dynamicField name="*_dates" type="date" indexed="true" stored="false" multiValued="true"/>
+  <dynamicField name="*_texts" type="text_cjk" indexed="true" stored="false" multiValued="true"/>
+
+  <copyField source="*_text" dest="textContent" />
+  <copyField source="*_string" dest="textContent" />
+  <copyField source="*_texts" dest="textContent" />
+  <copyField source="*_strings" dest="textContent" />
+
+  <copyField source="termEntryId" dest="textContent" />
+  <copyField source="langSet" dest="textContent" />
+  <copyField source="descrip" dest="textContent" />
+  <copyField source="term" dest="textContent" />
+-->
+ </fields>
+
+ <!-- field to use to determine and enforce document uniqueness. -->
+ <uniqueKey>id</uniqueKey>
+
+ <!-- https://cwiki.apache.org/confluence/display/solr/Update+Request+Processors -->
+ <updateRequestProcessorChain name="deduplication">
+  <processor class="solr.processor.SignatureUpdateProcessorFactory">
+   <bool name="enabled">true</bool>
+   <str name="signatureField">id</str>
+   <bool name="overwriteDupes">false</bool>
+   <str name="fields">termEntryId, langSetm, term</str>
+   <str name="signatureClass">solr.processor.Lookup3Signature</str>
+  </processor>
+  <processor class="solr.LogUpdateProcessorFactory" />
+  <processor class="solr.RunUpdateProcessorFactory" />
+ </updateRequestProcessorChain>
+</schema>

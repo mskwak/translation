@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.easymanual.dao.EmLangsetMapper">
+  <resultMap id="BaseResultMap" type="kr.co.easymanual.model.EmLangset">
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="langset" property="langset" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" suffix=")" prefixOverrides="and">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose >
+                <when test="criterion.noValue"> and ${criterion.condition} </when>
+                <when test="criterion.singleValue"> and ${criterion.condition} #{criterion.value} </when>
+                <when test="criterion.betweenValue"> and ${criterion.condition} #{criterion.value} and #{criterion.secondValue} </when>
+                <when test="criterion.listValue"> and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" suffix=")" prefixOverrides="and">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose >
+                <when test="criterion.noValue"> and ${criterion.condition} </when>
+                <when test="criterion.singleValue"> and ${criterion.condition} #{criterion.value} </when>
+                <when test="criterion.betweenValue"> and ${criterion.condition} #{criterion.value} and #{criterion.secondValue} </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  
+  <sql id="Base_Column_List"> id, langset </sql>
+  
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="kr.co.easymanual.model.EmLangsetExample">
+    SELECT <if test="distinct"> DISTINCT </if> <include refid="Base_Column_List" /> FROM em_langset
+    <if test="_parameter != null"> <include refid="Example_Where_Clause" /> </if>
+    <if test="orderByClause != null"> ORDER BY ${orderByClause} </if>
+  </select>
+  
+  <delete id="deleteByExample" parameterType="kr.co.easymanual.model.EmLangsetExample">
+    DELETE FROM em_langset <if test="_parameter != null"> <include refid="Example_Where_Clause" /> </if>
+  </delete>
+  
+  <insert id="insert" parameterType="kr.co.easymanual.model.EmLangset">
+    INSERT INTO em_langset (id, langset) VALUES (#{id,jdbcType=INTEGER}, #{langset,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="kr.co.easymanual.model.EmLangset">
+    INSERT INTO em_langset
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null"> id, </if>
+      <if test="langset != null"> langset, </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null"> #{id,jdbcType=INTEGER}, </if>
+      <if test="langset != null"> #{langset,jdbcType=VARCHAR}, </if>
+    </trim>
+  </insert>
+  
+  <select id="countByExample" parameterType="kr.co.easymanual.model.EmLangsetExample" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM em_langset
+    <if test="_parameter != null"> <include refid="Example_Where_Clause" /> </if>
+  </select>
+  
+  <!-- http://www.mybatis.org/mybatis-3/ko/configuration.html#typeAliases 내장된 alias에 대한 설명-->
+  <update id="updateByExampleSelective" parameterType="map">
+    UPDATE em_langset
+    <set >
+      <if test="record.id != null"> id = #{record.id,jdbcType=INTEGER}, </if>
+      <if test="record.langset != null"> langset = #{record.langset,jdbcType=VARCHAR}, </if>
+    </set>
+    <if test="_parameter != null"> <include refid="Update_By_Example_Where_Clause" /> </if>
+  </update>
+  
+  <update id="updateByExample" parameterType="map">
+    UPDATE em_langset SET id = #{record.id,jdbcType=INTEGER}, langset = #{record.langset,jdbcType=VARCHAR}
+    <if test="_parameter != null"> <include refid="Update_By_Example_Where_Clause" /> </if>
+  </update>
+  
+  <!-- em_attachments 테이블의 primary key (serial type) 을 가져와서 em_langset 테이블에 INSERT 한다. -->
+  <insert id="insertByHashName" parameterType="map">
+    INSERT INTO em_langset SELECT id, #{langSet,jdbcType=VARCHAR} FROM em_attachments WHERE hash_name = #{hashName,jdbcType=VARCHAR}
+  </insert>
+  
+  <!--
+  	resultType="java.util.List" 로 받으면 안 된다. 왜 그럴까? -> 이런 고민을 했었다...
+  	SELECT DISTINCT(langset) FROM em_langset; 의 결과가 레코드 2개 이상이기 때문에 resultType="java.util.List" 로 받으면 된다고 생각했다.
+  	그러나 에러가 발생했고, 그래서 resultType="java.util.HashMap" 으로 리턴해서 자바 코드에서 List<Map<String, String>> 으로 받아 처리했다.
+  	구글링의 결과 2개 이상의 레코드를 resultType="java.lang.String" 로 리턴하고 자바 코드에서는 List<String> 로 받아서 처리를 하면 된다는 것을 알았다.
+  	요점은 2개 이상의 레코드를 resultType="java.lang.String" 로 넘겨도 된다는 것이다. 
+  -->
+  <select id="selectDistinctByLangSet" resultType="java.lang.String">
+  	SELECT DISTINCT(langset) FROM em_langset;
+  </select>
+</mapper>
