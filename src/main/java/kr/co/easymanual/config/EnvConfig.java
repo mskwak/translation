@@ -40,7 +40,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @MapperScan("kr.co.easymanual.dao")
 
 //https://www.jayway.com/2014/02/16/spring-propertysource -> @PropertySource 및 @PropertySources 에 대해 쉽게 설명해 두었다. (영어)
-//@PropertySource("file:${CONFIG_FILE}") 에서 $CONFIG_FILE은 쉘 환경변수 값을 의미한다.
+//@PropertySource("file:${CONFIG_FILE}")
 //스프링4 부터 지원. @PropertySources에 classpath 및 file 을 동시에 2개 이상 설정 가능하도록 한다.
 @PropertySources({
 	@PropertySource("classpath:easymanual.properties"),

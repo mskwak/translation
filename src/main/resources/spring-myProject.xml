@@ -29,9 +29,8 @@
 	
 	<import resource="classpath*:spring-viewResolver/spring-viewResolver.xml"/>
 	<import resource="classpath*:spring-multipartResolver.xml"/>
-	
-	<!-- https://objectpartners.com/2010/08/23/gaining-access-to-the-spring-context-in-non-spring-managed-classes/ -->
 	<bean id="springBean" class="kr.co.easymanual.utils.SpringBean" />
+
 
 	<!-- <bean id="messageConverter" ~~ 는 @ResponseBody 를 사용하기 위한 설정이다. -->
 	<!-- pom.xml에 <artifactId>gson</artifactId> 설정 필요
