@@ -9,7 +9,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrDocument;
 
 public interface Handler {
-	public SolrQuery getSolrQuery(String query, String filterQuery);
+	public SolrQuery getSolrQuery(String query);
 
 	public Map<String, List<SolrDocument>> getSolrResponse(SolrQuery solrQuery) throws SolrServerException, IOException;
 }

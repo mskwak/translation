@@ -5,13 +5,13 @@ import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.soap.Node;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -33,18 +33,9 @@ public class CopyOfXmlParserTest {
 
 		// String expression = "//termEntry";
 		//String expression = "//langSet[@xml:lang]";
-		String expression = "//martif";
+		String expression = "//term[@id]";
 		System.out.println("11111111111");
-		//NodeList termEntryNodeList = (NodeList) xpath.compile(expression).evaluate(document, XPathConstants.NODESET);
-
-
-//		System.out.println(termEntryNodeList.getLength());
-//		System.out.println(termEntryNodeList.item(0).getAttributes().getNamedItem("typee").getTextContent());
-//		System.out.println(termEntryNodeList.item(0).getAttributes().getNamedItem("xml:lang").getTextContent());
-
 		Node termEntryNodeList = (Node) xpath.compile(expression).evaluate(document, XPathConstants.NODE);
-
-		System.out.println(termEntryNodeList.getAttributes().getNamedItem("type").getTextContent());
 
 		System.out.println(termEntryNodeList);
 		if(termEntryNodeList == null) {

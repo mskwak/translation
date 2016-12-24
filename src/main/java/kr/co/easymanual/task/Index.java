@@ -13,7 +13,6 @@ import javax.xml.xpath.XPathFactory;
 
 import kr.co.easymanual.model.solr.TbxSolrBean;
 import kr.co.easymanual.utils.SpringBean;
-import kr.co.easymanual.utils.TbxUtils;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -133,7 +132,7 @@ public class Index implements Runnable {
     				tbxSolrBean.setId(this.termEntryId + "-" + this.charset);
     				tbxSolrBean.setTermEntryId(this.termEntryId);
     				tbxSolrBean.setLangSet(this.charset);
-    				tbxSolrBean.setCountry(TbxUtils.getCountryName(this.charset));
+    				//tbxSolrBean.setCountry(TbxUtils.getCountryName(this.charset));
     				tbxSolrBean.setDescrip(this.descrip);
     				tbxSolrBean.setTerm(this.term);
 

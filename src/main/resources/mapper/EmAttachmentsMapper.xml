@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="kr.co.easymanual.model.EmAttachments" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="langset" property="langset" jdbcType="VARCHAR" />
+    <result column="country" property="country" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="hash_name" property="hashName" jdbcType="VARCHAR" />
     <result column="path" property="path" jdbcType="VARCHAR" />
@@ -14,7 +15,7 @@
     <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, langset, name, hash_name, path, extension, size, uploader, created_time, updated_time
+    id, langset, country, name, hash_name, path, extension, size, uploader, created_time, updated_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     SELECT <include refid="Base_Column_List" /> FROM em_attachments WHERE id = #{id,jdbcType=INTEGER}
@@ -23,8 +24,8 @@
     DELETE FROM em_attachments WHERE id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="kr.co.easymanual.model.EmAttachments" >
-    INSERT INTO em_attachments (id, langset, name, hash_name, path, extension, size, uploader, created_time, updated_time)
-    VALUES (#{id,jdbcType=INTEGER} #{langset,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{hashName,jdbcType=VARCHAR}, 
+    INSERT INTO em_attachments (id, langset, country, name, hash_name, path, extension, size, uploader, created_time, updated_time)
+    values (#{id,jdbcType=INTEGER}, #{langset,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{hashName,jdbcType=VARCHAR}, 
       #{path,jdbcType=VARCHAR}, #{extension,jdbcType=VARCHAR}, #{size,jdbcType=BIGINT}, #{uploader,jdbcType=VARCHAR}
       #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP})
   </insert>
@@ -33,6 +34,7 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >id, </if>
       <if test="langset != null" >langset, </if>
+      <if test="country != null" >country, </if>
       <if test="name != null" >name, </if>
       <if test="hashName != null" >hash_name, </if>
       <if test="path != null" >path, </if>
@@ -45,6 +47,7 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" > #{id,jdbcType=INTEGER}, </if>
       <if test="langset != null" > #{langset,jdbcType=VARCHAR}, </if>
+      <if test="country != null" > #{country,jdbcType=VARCHAR}, </if>
       <if test="name != null" > #{name,jdbcType=VARCHAR}, </if>
       <if test="hashName != null" > #{hashName,jdbcType=VARCHAR}, </if>
       <if test="path != null" > #{path,jdbcType=VARCHAR}, </if>
@@ -56,9 +59,10 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="kr.co.easymanual.model.EmAttachments" >
-    UPDATE em_attachments
+    update em_attachments
     <set >
       <if test="langset != null" > langset = #{langset,jdbcType=VARCHAR}, </if>
+      <if test="country != null" > country = #{country,jdbcType=VARCHAR}, </if>
       <if test="name != null" > name = #{name,jdbcType=VARCHAR}, </if>
       <if test="hashName != null" > hash_name = #{hashName,jdbcType=VARCHAR}, </if>
       <if test="path != null" > path = #{path,jdbcType=VARCHAR}, </if>
@@ -71,8 +75,9 @@
     WHERE id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="kr.co.easymanual.model.EmAttachments" >
-    UPDATE em_attachments SET 
-      langset = #{langset,jdbcType=VARCHAR},
+    update em_attachments
+    set langset = #{langset,jdbcType=VARCHAR},
+      country = #{country,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       hash_name = #{hashName,jdbcType=VARCHAR},
       path = #{path,jdbcType=VARCHAR},
@@ -87,8 +92,6 @@
   <select id="selectAll" resultType="java.util.HashMap">
     SELECT <include refid="Base_Column_List" /> FROM em_attachments
   </select>
-  
-  <!-- List<EmAttachments> selectAllByField(@Param("fieldName") String fieldName, @Param("sort") String sort); -->
   <select id="selectAllByField" parameterType="java.util.HashMap" resultType="java.util.HashMap">
     SELECT <include refid="Base_Column_List" /> FROM em_attachments ORDER BY ${fieldName} ${sort} 
   </select>  
@@ -97,24 +100,4 @@
     SELECT <include refid="Base_Column_List" /> FROM em_attachments WHERE hash_name = #{hashName,jdbcType=VARCHAR}
   </select>
 
-  <!-- 동일한 파일 이름을 갖는 레코드에 대한 중복 제거를 위해 order by created_time asc 를 사용하여 가장 오래된 레코드가 리스트의 앞에 위치하도록 했다.
-  	리스트 상의 맨 앞의 요소는 나중에 뒤에 오는 요소에 의해 덮어쓰기 되면서 사라진다. 결과적으로 가장 최근의 데이터가 맵에 들어간다. -->
-  <select id="selectByLangSet" parameterType="java.util.List" resultType="kr.co.easymanual.model.EmAttachments">
-    SELECT b.* FROM em_langset a INNER JOIN em_attachments b ON a.id = b.id WHERE a.langset IN 
-    <foreach item="item" index="index" collection="list" open="(" separator="," close=") ORDER BY created_time ASC"> 
-		#{item}
-	</foreach>
-  </select>
-  
-<!-- 
-  <select id="selectCurrentVal" resultType="java.lang.Integer">
-    SELECT CURRVAL('em_attachments_id_seq');
-  </select>
-
-  <select id="selectNextVal" resultType="java.lang.Integer">
-    SELECT NEXTVAL('em_attachments_id_seq');
-  </select>
--->
-
-	
 </mapper>

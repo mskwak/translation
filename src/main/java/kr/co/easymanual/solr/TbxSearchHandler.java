@@ -32,11 +32,9 @@ public class TbxSearchHandler implements Handler {
 	private HttpSolrClient httpSolrClient;
 
 	@Override
-	public SolrQuery getSolrQuery(String query, String filterQuery) {
+	public SolrQuery getSolrQuery(String query) {
 		SolrQuery solrQuery =  new SolrQuery();
 		solrQuery.setQuery("{!join from=termEntryId to=termEntryId}term:" + query);
-		// TODO
-		solrQuery.setFilterQueries("langSet:" + ("all".equalsIgnoreCase(filterQuery) ? "*" : "(en-us OR " + filterQuery + ")"));
 		solrQuery.setParam("group", true);
 		solrQuery.setParam("group.field", "termEntryId");
 		solrQuery.setParam("group.offset", "0");
@@ -47,7 +45,7 @@ public class TbxSearchHandler implements Handler {
 		//solrQuery.setStart(pageable.getOffset());
 		//solrQuery.setRows(pageable.getPageSize());
 
-//		solrQuery.setQuery("{!join from=termEntryId to=termEntryId}term:" + query); 로 인해 하이라이트 기능이 동작하지 않음. 왜 그럴까?
+// solrQuery.setQuery("{!join from=termEntryId to=termEntryId}term:" + query); 로 인해 하이라이트 기능이 동작하지 않음. 왜 그럴까?
 //		solrQuery.setParam("hl:fl", "term descrip");
 //		solrQuery.setHighlight(true);
 //		solrQuery.setHighlight(true).setHighlightSnippets(1);
@@ -64,6 +62,19 @@ public class TbxSearchHandler implements Handler {
 
         	QueryResponse queryResponse = this.httpSolrClient.query(solrQuery);
 			GroupResponse groupResponse = queryResponse.getGroupResponse();
+
+//			Map<String, Map<String, List<String>>> xxx = queryResponse.getHighlighting();
+//
+//			if(xxx == null) {
+//				System.out.println("qqqqqqqqqqqqqqqqqqqqq");
+//				System.out.println("qqqqqqqqqqqqqqqqqqqqq");
+//				System.out.println("qqqqqqqqqqqqqqqqqqqqq");
+//			} else {
+//				System.out.println("wwwwwwwwwwwwwwwwwwwww: " + xxx.toString());
+//				System.out.println("wwwwwwwwwwwwwwwwwwwww: " + xxx.toString());
+//				System.out.println("wwwwwwwwwwwwwwwwwwwww: " + xxx.toString());
+//			}
+
 			List<GroupCommand> groupCommandList = groupResponse.getValues();
 
 			for(GroupCommand groupCommand: groupCommandList) {

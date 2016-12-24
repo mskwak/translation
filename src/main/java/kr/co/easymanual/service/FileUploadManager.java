@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.UUID;
 
 import kr.co.easymanual.dao.EmAttachmentsMapper;
-import kr.co.easymanual.dao.EmLangsetMapper;
-import kr.co.easymanual.exception.FileSaveException;
 import kr.co.easymanual.model.EmAttachments;
 import kr.co.easymanual.task.Index;
 import kr.co.easymanual.utils.TbxUtils;
@@ -22,7 +20,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -42,15 +39,11 @@ public class FileUploadManager {
 	private EmAttachmentsMapper emAttachmentsMapper;
 
 	@Autowired
-	private EmLangsetMapper emLangsetMapper;
-
-	@Autowired
 	private String attachmentsDirectory;
 
 	@Autowired
 	private ThreadPoolTaskExecutor taskExcutor;
 
-	@Transactional
 	public void insertAndindexing(List<MultipartFile> multiPartFiles) throws IOException {
 			this.prepare();
 			this.process(multiPartFiles);
@@ -70,9 +63,6 @@ public class FileUploadManager {
 		}
 	}
 
-	// http://netframework.tistory.com/entry/Spring-Transactional%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC
-	// private 메소드에서의 @Transactional 설정은 작동하지 않는다.
-	// @Transactional
 	private void process(List<MultipartFile> multiPartFiles) throws IOException {
 		for(MultipartFile multipartFile: multiPartFiles) {
 			String name = multipartFile.getOriginalFilename();
@@ -88,16 +78,16 @@ public class FileUploadManager {
 			try {
 				this.saveFile(path, multipartFile.getInputStream());
 			} catch (IOException e) {
-				throw new FileSaveException();
+				throw new IOException();
 			}
 
-			// 2. TBX 파일의 <martif type="TBX" xml:lang="en"> 태그로 부터 langset(charset) 정보 가져오기
-			String workinglangSet = TbxUtils.getCharsetFromMartif(path);
+			// 2. TBX 파일로 부터 langset(charset) 정보 가져오기
+			String langSet = TbxUtils.getLangSet(path);
 
 			// 3. DB에 INSERT 하기
 			EmAttachments emAttachments = new EmAttachments();
 			emAttachments.setName(name);
-			emAttachments.setLangset(workinglangSet);
+			emAttachments.setLangset(langSet);
 			emAttachments.setHashName(hashName);
 			emAttachments.setPath(path);
 			emAttachments.setExtension(extension);
@@ -105,18 +95,11 @@ public class FileUploadManager {
 			emAttachments.setUploader(uploader);
 			emAttachments.setCreatedTime(createdTime);
 			emAttachments.setUpdatedTime(updatedTime);
+
 			// 레코드 하나 등록 성공 시 1 리턴
 			this.emAttachmentsMapper.insertSelective(emAttachments);
 
-			// 4. TBX 파일의 termEntry 태그 하위의 모든 langSet 태그에 설정되어 있는 langSet 정보 INSERT
-			List<String> langSetList = TbxUtils.getAllLangSet(path);
-
-			for(String langSet: langSetList) {
-				langSet = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-				this.emLangsetMapper.insertByHashName(langSet, hashName);
-			}
-
-			// 5. 인덱싱 작업 하기
+			// 4. 인덱싱 작업 하기
 			this.taskExcutor.execute(new Index(path));
 		}
 	}

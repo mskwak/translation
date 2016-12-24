@@ -26,6 +26,4 @@ public interface EmAttachmentsMapper {
     List<EmAttachments> selectAllByField(@Param("fieldName") String fieldName, @Param("sort") String sort);
 
     EmAttachments selectByHashName(String hashName);
-
-    List<EmAttachments> selectByLangSet(List<String> list);
 }

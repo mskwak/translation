@@ -4,10 +4,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,7 +22,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -33,7 +30,6 @@ public class TbxUtils {
 
 	private static final Map<String, String> map = new ConcurrentHashMap<String, String>();
 
-	@Deprecated
 	private static final String delimiter = "|";
 
 	// TODO 외부에서 설정 가능하도록 해야 한다.
@@ -273,8 +269,6 @@ public class TbxUtils {
 		map.put("zh-sg", "Singapore");
 		map.put("zh-tw", "Taiwan, Province of China");
 		map.put("zu-za", "South Africa");
-
-
 		map.put("aa_dj", "Djibouti");
 		map.put("aa_er", "Eritrea");
 		map.put("aa_et", "Ethiopia");
@@ -512,47 +506,7 @@ public class TbxUtils {
 		map.put("zu_za", "South Africa");
 	}
 
-	// TODO 중복제거
-	public static String getCharsetFromMartif(String path) {
-		InputStream inputStream = null;
-
-		try {
-			inputStream = new FileInputStream(path);
-			Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputStream);
-			XPath xpath = XPathFactory.newInstance().newXPath();
-
-			String expression = "//martif";
-			Node node = (Node) xpath.compile(expression).evaluate(document, XPathConstants.NODE);
-
-			if(node == null) {
-				return null;
-			}
-
-			String type = node.getAttributes().getNamedItem("type").getTextContent();
-
-			if(!"TBX".equals(type)) {
-				return null;
-			}
-
-			String charset = node.getAttributes().getNamedItem("xml:lang").getTextContent();
-			return charset;
-		} catch (FileNotFoundException e) {
-			logger.error("", e);
-		} catch (SAXException e) {
-			logger.error("", e);
-		} catch (IOException e) {
-			logger.error("", e);
-		} catch (ParserConfigurationException e) {
-			logger.error("", e);
-		} catch (XPathExpressionException e) {
-			logger.error("", e);
-		}
-
-		return null;
-	}
-
-	// TODO 중복 제거
-	public static List<String> getAllLangSet(String path) {
+	public static String getLangSet(String path) {
 		InputStream inputStream = null;
 		Set<String> set = new HashSet<String>();
 
@@ -580,7 +534,7 @@ public class TbxUtils {
 			IOUtils.closeQuietly(inputStream);
 		}
 
-		return setToList(set);
+		return setToString(set);
 	}
 
 	public static String getCountryName(String charset) {
@@ -602,13 +556,6 @@ public class TbxUtils {
 		return set;
 	}
 
-	private static List<String> setToList(Set<String> set) {
-		List<String> list = new ArrayList<String>();
-		list.addAll(set);
-		return list;
-	}
-
-	@Deprecated
 	private static String setToString(Set<String> set) {
 		StringBuilder stringBuilder = new StringBuilder();
 		Iterator<String> iterator = set.iterator();

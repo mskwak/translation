@@ -20,7 +20,6 @@ public class CronConfig {
 	// http://kanetami.tistory.com/entry/Schedule-Spring-%EC%8A%A4%ED%94%84%EB%A7%81-%EC%8A%A4%EC%BC%80%EC%A5%B4-%EC%84%A4%EC%A0%95%EB%B2%95-CronTab
 	// 초, 분, 시, 날, 달, 요일
 	@Scheduled(cron = "0 5 0 * * ?")
-	//fixedDelay=50000는 매 50초 마다 실행한다는 의미다.
 	//@Scheduled(fixedDelay=50000)
 	public void doSomething() {
 		this.cronManager.retryIndex();

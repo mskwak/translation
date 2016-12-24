@@ -23,9 +23,4 @@ public class DefaultExceptionHandler {
 	public Map<String, Object> handleException(SolrServerException ex) {
 		return Return.fail();
 	}
-
-	@ExceptionHandler({FileDownloadException.class})
-	public String handleException(FileDownloadException ex) {
-		return "downloadError";
-	}
 }

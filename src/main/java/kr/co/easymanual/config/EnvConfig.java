@@ -31,17 +31,14 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan("kr.co.easymanual")
 @Lazy
 @EnableTransactionManagement
-
-//kr.co.easymanual.map 으로 설정하면 에러가 발생한다. 왜일까? -> 답: @MapperScan에서 Mapper는 xml 파일이 아니라 인터페이스로 정의된 java 파일이었다.
-//ERROR o.s.web.servlet.DispatcherServlet - Context initialization failed
-//org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'uploadBySomething': Injection of autowired dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Could not autowire field: private kr.co.easymanual.service.UploadedFileManager kr.co.easymanual.controller.UploadBySomething.uploadedFileManager; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'uploadedFileManager': Injection of autowired dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Could not autowire field: private kr.co.easymanual.dao.EmAttachmentsMapper kr.co.easymanual.service.UploadedFileManager.emAttachmentsMapper; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type [kr.co.easymanual.dao.EmAttachmentsMapper] found for dependency: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+// kr.co.easymanual.map 으로 설정하면 에러가 발생한다. 왜일까? -> 답: @MapperScan에서 Mapper는 xml 파일이 아니라 인터페이스로 정의된 java 파일이었다.
+// ERROR o.s.web.servlet.DispatcherServlet - Context initialization failed
+// org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'uploadBySomething': Injection of autowired dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Could not autowire field: private kr.co.easymanual.service.UploadedFileManager kr.co.easymanual.controller.UploadBySomething.uploadedFileManager; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'uploadedFileManager': Injection of autowired dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Could not autowire field: private kr.co.easymanual.dao.EmAttachmentsMapper kr.co.easymanual.service.UploadedFileManager.emAttachmentsMapper; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type [kr.co.easymanual.dao.EmAttachmentsMapper] found for dependency: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
 //@MapperScan("kr.co.easymanual")
 //@MapperScan("classpath:mapper/*.xml")
 @MapperScan("kr.co.easymanual.dao")
-
-//https://www.jayway.com/2014/02/16/spring-propertysource -> @PropertySource 및 @PropertySources 에 대해 쉽게 설명해 두었다. (영어)
-//@PropertySource("file:${CONFIG_FILE}") 에서 $CONFIG_FILE은 쉘 환경변수 값을 의미한다.
-//스프링4 부터 지원. @PropertySources에 classpath 및 file 을 동시에 2개 이상 설정 가능하도록 한다.
+//@PropertySource("file:${CONFIG_FILE}") // https://www.jayway.com/2014/02/16/spring-propertysource/
+// 스프링4 부터 지원. @PropertySources에 classpath 및 file 을 동시에 2개 이상 설정 가능하도록 한다.
 @PropertySources({
 	@PropertySource("classpath:easymanual.properties"),
     @PropertySource(value = "file:${CONFIG_DIR}/easymanual.properties", ignoreResourceNotFound = true)
@@ -86,27 +83,14 @@ public class EnvConfig {
 		return basicDataSource;
 	}
 
-//	@Bean(destroyMethod = "close")
-//	public DataSource dataSource() {
-//		org.apache.tomcat.jdbc.pool.DataSource dataSource = new org.apache.tomcat.jdbc.pool.DataSource();
-//		//configureDataSource(dataSource);
-//		dataSource.setDriverClassName(this.driverClassName);
-//		dataSource.setUrl(this.url);
-//		dataSource.setUsername(this.userName);
-//		dataSource.setPassword(this.password);
-//		dataSource.setValidationQuery("SELECT 1");
-//		return dataSource;
-//	}
+/*
+	@Bean
+	public DataSourceTransactionManager transactionManager() {
+		return new DataSourceTransactionManager(this.dataSource());
+	}
+*/
 
-
-// http://zgundam.tistory.com/86
-//	@Bean
-//	public DataSourceTransactionManager transactionManager() {
-//		return new DataSourceTransactionManager(this.dataSource());
-//	}
-
-	// 트랜잭션 검증 안된 상태. http://m.blog.naver.com/ck791024/40188108679 -> 검증 완료
-	// @Transactional을 private 메소드에 적용해 봤자 동작하지 않는다.
+	// 트랜잭션 검증 안된 상태
 	@Bean
 	public PlatformTransactionManager transactionManager() {
 		return new DataSourceTransactionManager(this.dataSource());
@@ -115,12 +99,12 @@ public class EnvConfig {
 	// 웹에서 등록한 데이터가 데이터베이스에 INSERT 된다.
 	@Bean
 	public SqlSessionFactory sqlSessionFactory() throws Exception {
-		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
-		sqlSessionFactoryBean.setDataSource(this.dataSource());
+		SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
+		sessionFactory.setDataSource(this.dataSource());
 		// org.apache.ibatis.binding.BindingException: Invalid bound statement (not found):
 		// http://stackoverflow.com/questions/30081542/mybatis-spring-mvc-error-invalid-bound-statement-not-found
-		sqlSessionFactoryBean.setMapperLocations(ResourcePatternUtils.getResourcePatternResolver(this.resourceLoader).getResources("classpath:mapper/*.xml"));
-		return sqlSessionFactoryBean.getObject();
+		sessionFactory.setMapperLocations(ResourcePatternUtils.getResourcePatternResolver(this.resourceLoader).getResources("classpath:mapper/*.xml"));
+		return sessionFactory.getObject();
 	}
 
 	// http://mryong8.blogspot.kr/2014/11/spring-32-properties-message.html
