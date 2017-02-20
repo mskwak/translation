@@ -7,13 +7,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import kr.co.easymanual.dao.EmAttachmentsMapper;
-import kr.co.easymanual.dao.EmLangsetMapper;
-import kr.co.easymanual.exception.FileSaveException;
-import kr.co.easymanual.model.EmAttachments;
-import kr.co.easymanual.task.Index;
-import kr.co.easymanual.utils.TbxUtils;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +17,13 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import kr.co.easymanual.dao.EmAttachmentsMapper;
+import kr.co.easymanual.dao.EmLangsetMapper;
+import kr.co.easymanual.exception.FileSaveException;
+import kr.co.easymanual.model.EmAttachments;
+import kr.co.easymanual.task.Index;
+import kr.co.easymanual.utils.TbxUtils;
 
 /**
  *
@@ -112,7 +112,7 @@ public class FileUploadManager {
 			List<String> langSetList = TbxUtils.getAllLangSet(path);
 
 			for(String langSet: langSetList) {
-				langSet = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+				//langSet = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 				this.emLangsetMapper.insertByHashName(langSet, hashName);
 			}
 
