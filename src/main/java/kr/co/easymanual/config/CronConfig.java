@@ -1,19 +1,18 @@
 package kr.co.easymanual.config;
 
-import kr.co.easymanual.service.CronManager;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import kr.co.easymanual.service.CronManager;
+
 //http://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/#scheduling-enable-annotation-support
 @Configuration
 @EnableAsync
 @EnableScheduling
 public class CronConfig {
-
 	@Autowired
 	private CronManager cronManager;
 

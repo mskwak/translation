@@ -1,3 +1,2 @@
-1. solr-5.5.2 버전을 설치했다.
-2. 설치 디렉토리는 /opt/solr-5.5.2 및 그 하위이다.
-3. /opt/solr-5.5.2/server/solr/multicore/tbx/conf 하위에 schema.xml, solrconfig.xml 파일을 생성했다.
+설치 방법은 에버노트 학습정리 -> Solr -> 설치 노트를 참조한다.
+터미널 작업과 웹에서의 작업이 병행되어야 한다.
