@@ -29,6 +29,11 @@
   </types>
 
 
+ <!-- 
+	indexed: If true, the value of the field can be used in queries to retrieve matching documents.
+	stored: If true, the actual value of the field can be retrieve by queries.
+	indexed, stored의 차이점이 뭔지...? 
+  -->
 
  <fields>
   <field name="id" type="string" indexed="true" stored="true" required="true"/>
