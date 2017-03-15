@@ -8,7 +8,6 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.mybatis.spring.SqlSessionFactoryBean;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -35,17 +34,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan("kr.co.easymanual")
 @Lazy
 @EnableTransactionManagement
-
-//kr.co.easymanual.map 으로 설정하면 에러가 발생한다. 왜일까? -> 답: @MapperScan에서 Mapper는 xml 파일이 아니라 인터페이스로 정의된 java 파일이었다.
-//ERROR o.s.web.servlet.DispatcherServlet - Context initialization failed
-//org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'uploadBySomething': Injection of autowired dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Could not autowire field: private kr.co.easymanual.service.UploadedFileManager kr.co.easymanual.controller.UploadBySomething.uploadedFileManager; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'uploadedFileManager': Injection of autowired dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Could not autowire field: private kr.co.easymanual.dao.EmAttachmentsMapper kr.co.easymanual.service.UploadedFileManager.emAttachmentsMapper; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type [kr.co.easymanual.dao.EmAttachmentsMapper] found for dependency: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
-//@MapperScan("kr.co.easymanual")
-//@MapperScan("classpath:mapper/*.xml")
-@MapperScan("kr.co.easymanual.dao")
-
-//https://www.jayway.com/2014/02/16/spring-propertysource -> @PropertySource 및 @PropertySources 에 대해 쉽게 설명해 두었다. (영어)
-//@PropertySource("file:${CONFIG_FILE}") 에서 $CONFIG_FILE은 쉘 환경변수 값을 의미한다.
-//스프링4 부터 지원. @PropertySources에 classpath 및 file 을 동시에 2개 이상 설정 가능하도록 한다.
 @PropertySources({
 	@PropertySource("classpath:easymanual.properties"),
     @PropertySource(value = "file:${CONFIG_DIR}/easymanual.properties", ignoreResourceNotFound = true)
