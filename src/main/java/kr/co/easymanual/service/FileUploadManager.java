@@ -18,10 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import kr.co.easymanual.dao.EmAttachmentsMapper;
-import kr.co.easymanual.dao.EmLangsetMapper;
+import kr.co.easymanual.entity.EmAttachments;
 import kr.co.easymanual.exception.FileSaveException;
-import kr.co.easymanual.model.EmAttachments;
+import kr.co.easymanual.repository.EmAttachmentsRepository;
 import kr.co.easymanual.task.Index;
 import kr.co.easymanual.utils.TbxUtils;
 
@@ -39,10 +38,8 @@ public class FileUploadManager {
 	private static final Logger logger = LoggerFactory.getLogger(FileUploadManager.class);
 
 	@Autowired
-	private EmAttachmentsMapper emAttachmentsMapper;
+	private EmAttachmentsRepository emAttachmentsRepository;
 
-	@Autowired
-	private EmLangsetMapper emLangsetMapper;
 
 	@Autowired
 	private String attachmentsDirectory;
@@ -97,7 +94,7 @@ public class FileUploadManager {
 			// 3. DB에 INSERT 하기
 			EmAttachments emAttachments = new EmAttachments();
 			emAttachments.setName(name);
-			emAttachments.setLangset(workinglangSet);
+			emAttachments.setLangSet(workinglangSet);
 			emAttachments.setHashName(hashName);
 			emAttachments.setPath(path);
 			emAttachments.setExtension(extension);
@@ -106,7 +103,7 @@ public class FileUploadManager {
 			emAttachments.setCreatedTime(createdTime);
 			emAttachments.setUpdatedTime(updatedTime);
 			// 레코드 하나 등록 성공 시 1 리턴
-			this.emAttachmentsMapper.insertSelective(emAttachments);
+			this.emAttachmentsRepository.save(emAttachments);
 
 			// 4. TBX 파일의 termEntry 태그 하위의 모든 langSet 태그에 설정되어 있는 langSet 정보 INSERT
 			List<String> langSetList = TbxUtils.getAllLangSet(path);

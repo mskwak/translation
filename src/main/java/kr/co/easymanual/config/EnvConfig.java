@@ -22,6 +22,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternUtils;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -34,6 +35,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan("kr.co.easymanual")
 @Lazy
 @EnableTransactionManagement
+@EnableJpaRepositories(basePackages="kr.co.easymanual.repository")
 @PropertySources({
 	@PropertySource("classpath:easymanual.properties"),
     @PropertySource(value = "file:${CONFIG_DIR}/easymanual.properties", ignoreResourceNotFound = true)
