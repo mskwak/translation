@@ -102,14 +102,14 @@ public class FileUploadManager {
 			emAttachments.setUploader(uploader);
 			emAttachments.setCreatedTime(createdTime);
 			emAttachments.setUpdatedTime(updatedTime);
-			// 레코드 하나 등록 성공 시 1 리턴
+
+			// TODO 리턴값은 무엇일까?
 			this.emAttachmentsRepository.save(emAttachments);
 
 			// 4. TBX 파일의 termEntry 태그 하위의 모든 langSet 태그에 설정되어 있는 langSet 정보 INSERT
 			List<String> langSetList = TbxUtils.getAllLangSet(path);
 
 			for(String langSet: langSetList) {
-				//langSet = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 				this.emLangsetMapper.insertByHashName(langSet, hashName);
 			}
 
