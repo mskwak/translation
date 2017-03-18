@@ -46,7 +46,7 @@ public class FileDownloadManager {
 
 	// TODO 한글이름 다운로드 안되는 문제 해결 필요
 	public void download(String charset, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
-		List<EmAttachments> emAttachmentsList = this.getUniqEmAttachmentsList(this.emAttachmentsRepository.findByCharsetIn(this.getCharsetList(charset)));
+		List<EmAttachments> emAttachmentsList = this.getUniqEmAttachmentsList(this.emAttachmentsRepository.findByLangSetIn(this.getCharsetList(charset)));
 
 		if(emAttachmentsList.isEmpty()) {
 			throw new FileNotFoundException();
