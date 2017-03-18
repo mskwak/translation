@@ -46,7 +46,7 @@ public class FileDownloadManager {
 
 	// TODO 한글이름 다운로드 안되는 문제 해결 필요
 	public void download(String charset, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
-		List<EmAttachments> emAttachmentsList = this.getUniqEmAttachmentsList(this.emAttachmentsRepository.findByCharset(this.getCharsetList(charset)));
+		List<EmAttachments> emAttachmentsList = this.getUniqEmAttachmentsList(this.emAttachmentsRepository.findByCharsetIn(this.getCharsetList(charset)));
 
 		if(emAttachmentsList.isEmpty()) {
 			throw new FileNotFoundException();
@@ -233,7 +233,14 @@ public class FileDownloadManager {
 	 * 다운로드 페이지에서 charset에 대응하는 국가 이름이 없는 파일은 다운로드 하지 못하도록 뷰에서 제거한다.
 	 */
 	public Map<String, String> getCharsetMap() {
-		List<String> list = this.emLangsetMapper.selectDistinctByLangSet();
+		// TODO 테스트 필요
+		// http://stackoverflow.com/questions/38224925/spring-data-jpa-distinct-return-results-from-a-single-column
+		List<String> list = this.EmLanSetRepository.findDistinctLangSet();
+
+		// MyBatis에서의 방법
+		// List<String> list = this.emLangsetMapper.selectDistinctByLangSet();
+
+
 		Map<String, String> map = new HashMap<String, String>();
 
 		for(String s: list) {
