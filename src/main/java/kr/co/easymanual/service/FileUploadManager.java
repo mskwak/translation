@@ -19,8 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.easymanual.entity.EmAttachments;
+import kr.co.easymanual.entity.EmLangSet;
 import kr.co.easymanual.exception.FileSaveException;
 import kr.co.easymanual.repository.EmAttachmentsRepository;
+import kr.co.easymanual.repository.EmLanSetRepository;
 import kr.co.easymanual.task.Index;
 import kr.co.easymanual.utils.TbxUtils;
 
@@ -40,6 +42,8 @@ public class FileUploadManager {
 	@Autowired
 	private EmAttachmentsRepository emAttachmentsRepository;
 
+	@Autowired
+	private EmLanSetRepository emLanSetRepository;
 
 	@Autowired
 	private String attachmentsDirectory;
@@ -103,15 +107,28 @@ public class FileUploadManager {
 			emAttachments.setCreatedTime(createdTime);
 			emAttachments.setUpdatedTime(updatedTime);
 
-			// TODO 리턴값은 무엇일까?
-			this.emAttachmentsRepository.save(emAttachments);
+			// TODO 리턴값은 무엇일까? -> the saved emAttachments가 리턴값이다. 이 리턴된 emAttachments에는 id(시퀀스)가 채워져 있겠지.
+			emAttachments = this.emAttachmentsRepository.save(emAttachments);
 
 			// 4. TBX 파일의 termEntry 태그 하위의 모든 langSet 태그에 설정되어 있는 langSet 정보 INSERT
 			List<String> langSetList = TbxUtils.getAllLangSet(path);
 
 			for(String langSet: langSetList) {
-				this.emLangsetMapper.insertByHashName(langSet, hashName);
+				EmLangSet emLangSet = new EmLangSet();
+				emLangSet.setLangSet(langSet);
+				emLangSet.setEmAttachments(emAttachments);
+				this.emLanSetRepository.save(emLangSet);
 			}
+
+//			MyBatis를 이용했을 경우 아래와 같이 em_attachments 테이블로 부터 PK를 가져와 em_langset 테이블에 FK로 INSERT를 했다.
+//			em_attachments 테이블의 primary key (serial type) 을 가져와서 em_langset 테이블에 INSERT 한다.
+//			<insert id="insertByHashName" parameterType="map">
+//			    INSERT INTO em_langset SELECT id, #{langSet,jdbcType=VARCHAR} FROM em_attachments WHERE hash_name = #{hashName,jdbcType=VARCHAR}
+//			</insert>
+
+//			for(String langSet: langSetList) {
+//				this.emLangsetMapper.insertByHashName(langSet, hashName);
+//			}
 
 			// 5. 인덱싱 작업 하기
 			this.taskExcutor.execute(new Index(path));

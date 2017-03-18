@@ -19,34 +19,34 @@ import java.util.zip.ZipOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import kr.co.easymanual.dao.EmAttachmentsMapper;
-import kr.co.easymanual.dao.EmLangsetMapper;
-import kr.co.easymanual.model.EmAttachments;
-import kr.co.easymanual.utils.GeneralUtils;
-import kr.co.easymanual.utils.TbxUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
+import kr.co.easymanual.entity.EmAttachments;
+import kr.co.easymanual.repository.EmAttachmentsRepository;
+import kr.co.easymanual.repository.EmLanSetRepository;
+import kr.co.easymanual.utils.GeneralUtils;
+import kr.co.easymanual.utils.TbxUtils;
+
 @Service
 public class FileDownloadManager {
 	private static final Logger logger = LoggerFactory.getLogger(FileDownloadManager.class);
 
 	@Autowired
-	private EmAttachmentsMapper emAttachmentsMapper;
+	private EmAttachmentsRepository emAttachmentsRepository;
 
 	@Autowired
-	private EmLangsetMapper emLangsetMapper;
+	private EmLanSetRepository EmLanSetRepository;
 
 	@Autowired
 	private String attachmentsDirectory;
 
 	// TODO 한글이름 다운로드 안되는 문제 해결 필요
 	public void download(String charset, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
-		List<EmAttachments> emAttachmentsList = this.getUniqEmAttachmentsList(this.emAttachmentsMapper.selectByLangSet(this.getCharsetList(charset)));
+		List<EmAttachments> emAttachmentsList = this.getUniqEmAttachmentsList(this.emAttachmentsRepository.findByCharset(this.getCharsetList(charset)));
 
 		if(emAttachmentsList.isEmpty()) {
 			throw new FileNotFoundException();
@@ -117,7 +117,7 @@ public class FileDownloadManager {
 
 	private void getOriginalFile(EmAttachments emAttachments, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
 		File file = new File(emAttachments.getPath());
-		int size = emAttachments.getSize().intValue();
+		int size = Math.toIntExact(emAttachments.getSize());
 
 		if(!file.exists()) {
 			logger.error("file not exist. " + "file: " + file.toString());
