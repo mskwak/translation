@@ -23,6 +23,7 @@ import kr.co.easymanual.entity.EmLangSet;
 import kr.co.easymanual.exception.FileSaveException;
 import kr.co.easymanual.repository.EmAttachmentsRepository;
 import kr.co.easymanual.repository.EmLanSetRepository;
+import kr.co.easymanual.task.Index;
 import kr.co.easymanual.utils.TbxUtils;
 
 /**
@@ -132,7 +133,7 @@ public class FileUploadManager {
 //			}
 
 			// 5. 인덱싱 작업 하기
-			// this.taskExcutor.execute(new Index(path));
+			this.taskExcutor.execute(new Index(path));
 		}
 	}
 
