@@ -19,7 +19,7 @@ public class EmLangSet {
 	@Column(name="id")
 	private Integer id;
 
-	@Column(name="langset")
+	@Column(name="langset", length=32)
 	private String langSet;
 
 	// 외래키를 이 테이블에 만들어야 하니, 이 Entity에다 무언가 설정을 해주어야 하겠지? -> 엉. 가설이 맞았어

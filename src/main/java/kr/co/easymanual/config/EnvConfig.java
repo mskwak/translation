@@ -23,7 +23,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -105,7 +105,13 @@ public class EnvConfig {
 	// @Transactional을 private 메소드에 적용해 봤자 동작하지 않는다.
 	@Bean
 	public PlatformTransactionManager transactionManager() {
-		return new DataSourceTransactionManager(this.dataSource());
+		// Hibernate에서 사용
+		// http://www.baeldung.com/transaction-configuration-with-jpa-and-spring 참조했다.
+		JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
+		jpaTransactionManager.setEntityManagerFactory(this.entityManagerFactory().getObject());
+		return new JpaTransactionManager();
+		// MyBatis에서 사용
+		// return new DataSourceTransactionManager(this.dataSource());
 	}
 
 	// 웹에서 등록한 데이터가 데이터베이스에 INSERT 된다.

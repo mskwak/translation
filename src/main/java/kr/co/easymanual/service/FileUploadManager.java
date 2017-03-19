@@ -23,7 +23,6 @@ import kr.co.easymanual.entity.EmLangSet;
 import kr.co.easymanual.exception.FileSaveException;
 import kr.co.easymanual.repository.EmAttachmentsRepository;
 import kr.co.easymanual.repository.EmLanSetRepository;
-import kr.co.easymanual.task.Index;
 import kr.co.easymanual.utils.TbxUtils;
 
 /**
@@ -36,6 +35,7 @@ import kr.co.easymanual.utils.TbxUtils;
  */
 
 @Service
+@Transactional
 public class FileUploadManager {
 	private static final Logger logger = LoggerFactory.getLogger(FileUploadManager.class);
 
@@ -51,7 +51,7 @@ public class FileUploadManager {
 	@Autowired
 	private ThreadPoolTaskExecutor taskExcutor;
 
-	@Transactional
+	//@Transactional
 	public void insertAndindexing(List<MultipartFile> multiPartFiles) throws IOException {
 			this.prepare();
 			this.process(multiPartFiles);
@@ -73,7 +73,7 @@ public class FileUploadManager {
 
 	// http://netframework.tistory.com/entry/Spring-Transactional%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC
 	// private 메소드에서의 @Transactional 설정은 작동하지 않는다.
-	// @Transactional
+	//@Transactional
 	private void process(List<MultipartFile> multiPartFiles) throws IOException {
 		for(MultipartFile multipartFile: multiPartFiles) {
 			String name = multipartFile.getOriginalFilename();
@@ -115,7 +115,8 @@ public class FileUploadManager {
 
 			for(String langSet: langSetList) {
 				EmLangSet emLangSet = new EmLangSet();
-				emLangSet.setLangSet(langSet);
+				// emLangSet.setLangSet(langSet);
+				emLangSet.setLangSet("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 				emLangSet.setEmAttachments(emAttachments);
 				this.emLanSetRepository.save(emLangSet);
 			}
@@ -131,7 +132,7 @@ public class FileUploadManager {
 //			}
 
 			// 5. 인덱싱 작업 하기
-			this.taskExcutor.execute(new Index(path));
+			// this.taskExcutor.execute(new Index(path));
 		}
 	}
 
