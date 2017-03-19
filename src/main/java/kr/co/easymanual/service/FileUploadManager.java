@@ -35,7 +35,6 @@ import kr.co.easymanual.utils.TbxUtils;
  */
 
 @Service
-@Transactional
 public class FileUploadManager {
 	private static final Logger logger = LoggerFactory.getLogger(FileUploadManager.class);
 
@@ -51,7 +50,7 @@ public class FileUploadManager {
 	@Autowired
 	private ThreadPoolTaskExecutor taskExcutor;
 
-	//@Transactional
+	@Transactional
 	public void insertAndindexing(List<MultipartFile> multiPartFiles) throws IOException {
 			this.prepare();
 			this.process(multiPartFiles);
@@ -73,7 +72,7 @@ public class FileUploadManager {
 
 	// http://netframework.tistory.com/entry/Spring-Transactional%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC
 	// private 메소드에서의 @Transactional 설정은 작동하지 않는다.
-	//@Transactional
+	// @Transactional
 	private void process(List<MultipartFile> multiPartFiles) throws IOException {
 		for(MultipartFile multipartFile: multiPartFiles) {
 			String name = multipartFile.getOriginalFilename();
@@ -107,7 +106,7 @@ public class FileUploadManager {
 			emAttachments.setCreatedTime(createdTime);
 			emAttachments.setUpdatedTime(updatedTime);
 
-			// TODO 리턴값은 무엇일까? -> the saved emAttachments가 리턴값이다. 이 리턴된 emAttachments에는 id(시퀀스)가 채워져 있겠지.
+			// TODO 리턴값은 무엇일까? -> the saved emAttachments가 리턴값이다. 이 리턴된 emAttachments에는 id(시퀀스, PK)가 채워져 있겠지. -> 그렇다. 채워져있다.
 			emAttachments = this.emAttachmentsRepository.save(emAttachments);
 
 			// 4. TBX 파일의 termEntry 태그 하위의 모든 langSet 태그에 설정되어 있는 langSet 정보 INSERT
@@ -115,8 +114,9 @@ public class FileUploadManager {
 
 			for(String langSet: langSetList) {
 				EmLangSet emLangSet = new EmLangSet();
-				// emLangSet.setLangSet(langSet);
-				emLangSet.setLangSet("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+				emLangSet.setLangSet(langSet);
+				// EmAttachments 엔티티의 PK가  EmLangSet 엔티티 attachment_id 필드에  FK로 저장되는 것을 기대했다. -> 그렇다. 기대대로 FK로 저장된다.
+				// 단, EmLangSet 엔티티 attachment_id 필드가 insertable=false, updatable=false로 되어 있을 경우 FK로 저장되지 않는다.
 				emLangSet.setEmAttachments(emAttachments);
 				this.emLanSetRepository.save(emLangSet);
 			}

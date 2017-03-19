@@ -105,12 +105,11 @@ public class EnvConfig {
 	// @Transactional을 private 메소드에 적용해 봤자 동작하지 않는다.
 	@Bean
 	public PlatformTransactionManager transactionManager() {
-		// Hibernate에서 사용
+		// JPA에서 트랜잭선을 사용하기 위해서는 아래 설정을 해주어야만 한다.
 		// http://www.baeldung.com/transaction-configuration-with-jpa-and-spring 참조했다.
-		JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
-		jpaTransactionManager.setEntityManagerFactory(this.entityManagerFactory().getObject());
-		return new JpaTransactionManager();
-		// MyBatis에서 사용
+		return new JpaTransactionManager(this.entityManagerFactory().getObject());
+
+		// MyBatis에서 트랜잭선을 사용하기 위해서는 아래 설정을 해주어야만 한다.
 		// return new DataSourceTransactionManager(this.dataSource());
 	}
 

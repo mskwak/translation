@@ -28,6 +28,7 @@ public class EmLangSet {
 	// 나는 왜 아래의 설정이 이 테이블에 필드를 추가한다고 생각했을까? -> JoinColumn(name="attachment_id")을 어떻게 설정하느냐에 맞는 가설, 틀린 가설이 될 수 있다.
 	// 이 테이블인 em_langset 테이블에 attachment_id 라는 필드를 만든다. 이 attachment_id 필드는 FK로 생성되며 EmAttachments 엔티티의 id에 매핑된다.
 	@ManyToOne
-	@JoinColumn(name="attachment_id", insertable=false, updatable=false)
+	//@JoinColumn(name="attachment_id", insertable=false, updatable=false)
+	@JoinColumn(name="attachment_id")
 	private EmAttachments emAttachments;
 }
