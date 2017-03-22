@@ -5,10 +5,7 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
-import org.mybatis.spring.SqlSessionFactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -20,8 +17,6 @@ import org.springframework.context.annotation.PropertySources;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -50,11 +45,6 @@ public class EnvConfig {
 	@Value("${solr.server.address}") private String solrServerAddress;
 	@Value("${packages.to.scan}") private String packagesToScan;
 	@Value("${hibernate.dialect}") private String dialect;
-
-	// org.apache.ibatis.binding.BindingException: Invalid bound statement (not found):
-	// http://stackoverflow.com/questions/30081542/mybatis-spring-mvc-error-invalid-bound-statement-not-found
-	@Autowired
-	private ResourceLoader resourceLoader;
 
 	@Bean(name = "attachmentsDirectory")
 	public String getAttachmentsDirectory() {
@@ -111,17 +101,6 @@ public class EnvConfig {
 
 		// MyBatis에서 트랜잭선을 사용하기 위해서는 아래 설정을 해주어야만 한다.
 		// return new DataSourceTransactionManager(this.dataSource());
-	}
-
-	// 웹에서 등록한 데이터가 데이터베이스에 INSERT 된다.
-	@Bean
-	public SqlSessionFactory sqlSessionFactory() throws Exception {
-		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
-		sqlSessionFactoryBean.setDataSource(this.dataSource());
-		// org.apache.ibatis.binding.BindingException: Invalid bound statement (not found):
-		// http://stackoverflow.com/questions/30081542/mybatis-spring-mvc-error-invalid-bound-statement-not-found
-		sqlSessionFactoryBean.setMapperLocations(ResourcePatternUtils.getResourcePatternResolver(this.resourceLoader).getResources("classpath:mapper/*.xml"));
-		return sqlSessionFactoryBean.getObject();
 	}
 
 	// http://mryong8.blogspot.kr/2014/11/spring-32-properties-message.html
