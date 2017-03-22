@@ -57,6 +57,7 @@ public class EnvConfig {
 
 	// org.apache.ibatis.binding.BindingException: Invalid bound statement (not found):
 	// http://stackoverflow.com/questions/30081542/mybatis-spring-mvc-error-invalid-bound-statement-not-found
+	// Mybatis 전용 설정
 	@Autowired
 	private ResourceLoader resourceLoader;
 
@@ -113,6 +114,7 @@ public class EnvConfig {
 	}
 
 	// 웹에서 등록한 데이터가 데이터베이스에 INSERT 된다.
+	// Mybatis 전용 설정
 	@Bean
 	public SqlSessionFactory sqlSessionFactory() throws Exception {
 		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
