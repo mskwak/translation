@@ -10,7 +10,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CronManager {
+public class CronService {
 	@Autowired
 	private ThreadPoolTaskExecutor taskExcutor;
 

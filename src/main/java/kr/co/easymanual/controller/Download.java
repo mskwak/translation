@@ -6,9 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.co.easymanual.exception.FileDownloadException;
-import kr.co.easymanual.service.FileDeletionManager;
-import kr.co.easymanual.service.FileDownloadManager;
-import kr.co.easymanual.service.ListAttachmentsManager;
+import kr.co.easymanual.service.FileDeletionService;
+import kr.co.easymanual.service.FileDownloadService;
+import kr.co.easymanual.service.ListAttachmentsService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,17 +25,17 @@ public class Download {
 	private static final Logger logger = LoggerFactory.getLogger(Download.class);
 
 	@Autowired
-	private ListAttachmentsManager listAttachmentsManager;
+	private ListAttachmentsService listAttachmentsService;
 
 	@Autowired
-	private FileDownloadManager fileDownloadManager;
+	private FileDownloadService fileDownloadService;
 
 	@Autowired
-	private FileDeletionManager fileDeletionManager;
+	private FileDeletionService fileDeletionService;
 
 	@RequestMapping(value = {"/download.do"}, method = {RequestMethod.GET})
 	public String downloadGet(Model model) {
-		model.addAttribute("charsetMap", this.fileDownloadManager.getCharsetMap());
+		model.addAttribute("charsetMap", this.fileDownloadService.getCharsetMap());
 		return "download";
 	}
 
@@ -46,7 +46,7 @@ public class Download {
 		HttpServletResponse httpServletResponse) throws FileDownloadException {
 
 		try {
-			this.fileDownloadManager.download(charset, httpServletRequest, httpServletResponse);
+			this.fileDownloadService.download(charset, httpServletRequest, httpServletResponse);
 		} catch (IOException e) {
 			throw new FileDownloadException(charset);
 		}

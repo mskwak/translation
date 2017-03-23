@@ -15,8 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SearchTerminologyManager {
-	private static final Logger logger = LoggerFactory.getLogger(SearchTerminologyManager.class);
+public class SearchTerminologyService {
+	private static final Logger logger = LoggerFactory.getLogger(SearchTerminologyService.class);
 
 	@Autowired
 	private Map<String, Handler> handler;

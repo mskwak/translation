@@ -13,8 +13,8 @@ import kr.co.easymanual.entity.EmAttachments;
 import kr.co.easymanual.repository.EmAttachmentsRepository;
 
 @Service
-public class FileDeletionManager {
-	private static final Logger logger = LoggerFactory.getLogger(FileDeletionManager.class);
+public class FileDeletionService {
+	private static final Logger logger = LoggerFactory.getLogger(FileDeletionService.class);
 
 	@Autowired
 	EmAttachmentsRepository emAttachmentsRepository;

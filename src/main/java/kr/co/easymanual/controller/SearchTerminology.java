@@ -3,8 +3,8 @@ package kr.co.easymanual.controller;
 import java.io.IOException;
 import java.util.Map;
 
-import kr.co.easymanual.service.FileDownloadManager;
-import kr.co.easymanual.service.SearchTerminologyManager;
+import kr.co.easymanual.service.FileDownloadService;
+import kr.co.easymanual.service.SearchTerminologyService;
 import kr.co.easymanual.utils.Return;
 
 import org.apache.solr.client.solrj.SolrServerException;
@@ -23,14 +23,14 @@ public class SearchTerminology {
 	private static final Logger logger = LoggerFactory.getLogger(SearchTerminology.class);
 
 	@Autowired
-	private SearchTerminologyManager searchTerminologyManager;
+	private SearchTerminologyService searchTerminologyService;
 
 	@Autowired
-	private FileDownloadManager fileDownloadManager;
+	private FileDownloadService fileDownloadService;
 
 	@RequestMapping(value = {"/search.do"}, method = {RequestMethod.GET})
 	public String searchTerminologyGet(Model model) {
-		model.addAttribute("charsetMap", this.fileDownloadManager.getCharsetMap());
+		model.addAttribute("charsetMap", this.fileDownloadService.getCharsetMap());
 		return "search";
 	}
 
@@ -42,7 +42,7 @@ public class SearchTerminology {
 			@RequestParam(value = "handler") String handler) throws SolrServerException, IOException {
 
 		try {
-			return Return.success(this.searchTerminologyManager.searchTerminology(word, charset, handler));
+			return Return.success(this.searchTerminologyService.searchTerminology(word, charset, handler));
 		} catch (SolrServerException e) {
 			logger.error("", e);
 			throw new SolrServerException(word);

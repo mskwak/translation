@@ -36,8 +36,8 @@ import kr.co.easymanual.utils.TbxUtils;
  */
 
 @Service
-public class FileUploadManager {
-	private static final Logger logger = LoggerFactory.getLogger(FileUploadManager.class);
+public class FileUploadService {
+	private static final Logger logger = LoggerFactory.getLogger(FileUploadService.class);
 
 	@Autowired
 	private EmAttachmentsRepository emAttachmentsRepository;

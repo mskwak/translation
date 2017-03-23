@@ -11,7 +11,7 @@ import kr.co.easymanual.entity.EmAttachments;
 import kr.co.easymanual.repository.EmAttachmentsRepository;
 
 @Service
-public class ListAttachmentsManager {
+public class ListAttachmentsService {
 	@Autowired
 	private EmAttachmentsRepository emAttachmentsRepository;
 

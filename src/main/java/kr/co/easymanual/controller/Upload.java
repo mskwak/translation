@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import kr.co.easymanual.service.FileUploadManager;
+import kr.co.easymanual.service.FileUploadService;
 import kr.co.easymanual.utils.Return;
 
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ public class Upload {
 	private static final Logger logger = LoggerFactory.getLogger(Upload.class);
 
 	@Autowired
-	private FileUploadManager fileUploadManager;
+	private FileUploadService fileUploadService;
 
 	@RequestMapping(value = {"/upload.do"}, method = {RequestMethod.GET})
 	public String uploadGet() {
@@ -36,7 +36,7 @@ public class Upload {
 		List<MultipartFile> multiPartFiles = multipartHttpServletRequest.getFiles("uploadFile");
 
 		try {
-			this.fileUploadManager.insertAndindexing(multiPartFiles);
+			this.fileUploadService.insertAndindexing(multiPartFiles);
 		} catch (IOException e) {
 			logger.error("", e);
 			throw new IOException();
