@@ -318,6 +318,14 @@
 		<version>1.16.12</version>
 	</dependency>
 
+    <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    drewnoakes: 이미지로 부터 메타데이터 정보를 얻는데 필요한 라이브러리. 번역 프로젝트와 직접적인 관계는 없다.
+     XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
+	<dependency>
+		<groupId>com.drewnoakes</groupId>
+		<artifactId>metadata-extractor</artifactId>
+		<version>2.10.1</version>
+	</dependency>
 
 	<dependency>
 		<groupId>javax.mail</groupId>
