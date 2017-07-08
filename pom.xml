@@ -244,6 +244,16 @@
 		<version>5.3.1</version>
 	</dependency>
 
+    <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    /opt/jenkins/workspace/item01/src/main/java/kr/co/easymanual/service/FileDownloadManager.java:[19,26] package javax.servlet.http does not exist 에러가 발생하여 
+    https://open.egovframe.go.kr/nforges/qna/qna/3736/.do 에 있는 글을 참고한 후 아래 설정을 추가했다.
+     XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
+	<dependency>
+		<groupId>javax.servlet</groupId>
+		<artifactId>javax.servlet-api</artifactId>
+		<version>3.0.1</version>
+	</dependency>
+	
   </dependencies>
   <build>
     <finalName>translation</finalName>
