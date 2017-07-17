@@ -6,7 +6,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'echo $var'
-                sh 'mvn clean package pmd:pmd pmd:cpd findbugs:findbugs checkstyle:checkstyle'
+                sh 'mvn clean package jxr:jxr pmd:pmd pmd:cpd findbugs:findbugs checkstyle:checkstyle'
             }
         }
     }

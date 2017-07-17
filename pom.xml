@@ -292,7 +292,10 @@
   </resources>
      -->
   </build>
-  <!-- Jenkin에서 빌드 수행 시 콘솔 창에서 [WARNING] Unable to locate Source XRef to link to - DISABLED 경고 발생 -->
+  <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  Jenkin에서 빌드 수행 시 콘솔 창에서 [WARNING] Unable to locate Source XRef to link to - DISABLED 경고 발생
+  https://stackoverflow.com/questions/12038238/unable-to-locate-source-xref-to-link-to
+  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
   <reporting>
 	<plugins>
 		<plugin>
