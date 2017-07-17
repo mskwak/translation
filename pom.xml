@@ -291,8 +291,15 @@
     </resource>
   </resources>
      -->
-    
-    
-    
   </build>
+  <!-- Jenkin에서 빌드 수행 시 콘솔 창에서 [WARNING] Unable to locate Source XRef to link to - DISABLED 경고 발생 -->
+  <reporting>
+	<plugins>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-jxr-plugin</artifactId>
+			<version>2.5</version>
+		</plugin>
+	</plugins>
+  </reporting>
 </project>
