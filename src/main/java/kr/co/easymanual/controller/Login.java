@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class Login {
 	private static final Logger logger = LoggerFactory.getLogger(SearchTerminology.class);
 
-	////
+	//////
 	@RequestMapping(value = {"/", "/login.do"}, method = {RequestMethod.GET})
 	public String loginGet() {
 		return "login";
