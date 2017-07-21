@@ -12,7 +12,7 @@ public class Login {
 
 	//////
 	//////
-	//
+	////
 	@RequestMapping(value = {"/", "/login.do"}, method = {RequestMethod.GET})
 	public String loginGet() {
 		return "login";
