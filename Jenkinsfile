@@ -23,9 +23,9 @@ pipeline {
 					//step([$class: 'hudson.plugins.pmd.PmdPublisher', pattern: '**/target/pmd.xml', unstableTotalAll:'0'])
 					//step([$class: 'hudson.plugins.findbugs.FindBugsPublisher', pattern: '**/findbugsXml.xml', unstableTotalAll:'0'])
 					
-					step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher', pattern: '**/target/checkstyle-result.xml', canRunOnFailed: true,])
-					step([$class: 'hudson.plugins.pmd.PmdPublisher', pattern: '**/target/pmd.xml', canRunOnFailed: true,])
-					step([$class: 'hudson.plugins.findbugs.FindBugsPublisher', pattern: '**/findbugsXml.xml', canRunOnFailed: true,])
+					step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher', pattern: '**/target/checkstyle-resultt.xml', canRunOnFailed: true,])
+					step([$class: 'hudson.plugins.pmd.PmdPublisher', pattern: '**/target/pmdd.xml', canRunOnFailed: true,])
+					step([$class: 'hudson.plugins.findbugs.FindBugsPublisher', pattern: '**/findbugsXmll.xml', canRunOnFailed: true,])
                 }                
             }
         }
