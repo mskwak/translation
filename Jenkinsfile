@@ -38,3 +38,15 @@ pipeline {
 def test(command) {
 	echo command
 }
+
+/*
+git rev-parse refs/remotes/origin/master^{commit} 
+# 3925dbc3e1e99e2dd0732a5935a7476d6fa36adc
+
+git fetch --tags --progress https://github.com/mskwak/translation.git +refs/heads/*:refs/remotes/origin/*
+
+git rev-parse refs/remotes/origin/master^{commit}
+# dbbf7b3fd24daca2456c398dbcdb255446d22ed5
+
+-> sha1 값이 같으면 빌드 수행 안함. 다르면 빌드 수행 함.
+*/
