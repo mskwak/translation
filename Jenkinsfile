@@ -39,7 +39,9 @@ def test(command) {
 	echo command
 	
 	def lsls = "ls -al".execute().text
-	println lsls
+	def sb = new StringBuffer()
+	lsls.waitForProcessOutput(sb, System.err)
+	println(sb.toString()
 	
 	
 	def before = "git rev-parse refs/remotes/origin/master^{commit}".execute().text
