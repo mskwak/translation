@@ -11,6 +11,7 @@ pipeline {
                 sh 'echo $var'
                 sh 'mvn clean package jxr:jxr pmd:pmd pmd:cpd findbugs:findbugs checkstyle:checkstyle'
 
+				test
 				
                 script {
 					def thing = load 'Thing.groovy'
