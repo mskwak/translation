@@ -41,7 +41,7 @@ def test(command) {
 	def lsls = "ls -al".execute().text
 	def sb = new StringBuffer()
 	lsls.waitForProcessOutput(sb, System.err)
-	println(sb.toString()
+	println(sb.toString())
 	
 	
 	def before = "git rev-parse refs/remotes/origin/master^{commit}".execute().text
