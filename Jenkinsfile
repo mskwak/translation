@@ -37,6 +37,11 @@ pipeline {
 
 def test(command) {
 	echo command
+	
+	def lsls = "ls -al".execute().text
+	println lsls
+	
+	
 	def before = "git rev-parse refs/remotes/origin/master^{commit}".execute().text
 	
 	"git fetch --tags --progress https://github.com/mskwak/translation.git +refs/heads/*:refs/remotes/origin/*".execute()
