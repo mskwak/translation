@@ -14,11 +14,11 @@ pipeline {
 				test 'ls -al'
 				
 									
-				parallel {
-					step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher', pattern: 'target/checkstyle-result.xml', canRunOnFailed: true,])
-					step([$class: 'hudson.plugins.pmd.PmdPublisher', pattern: '**/target/pmd.xml', canRunOnFailed: true,])
-					step([$class: 'hudson.plugins.findbugs.FindBugsPublisher', pattern: '**/findbugsXml.xml', canRunOnFailed: true,])
-				}
+				
+				step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher', pattern: 'target/checkstyle-result.xml', canRunOnFailed: true,])
+				step([$class: 'hudson.plugins.pmd.PmdPublisher', pattern: '**/target/pmd.xml', canRunOnFailed: true,])
+				step([$class: 'hudson.plugins.findbugs.FindBugsPublisher', pattern: '**/findbugsXml.xml', canRunOnFailed: true,])
+				
 					
                 script {
 					def thing = load 'Thing.groovy'
