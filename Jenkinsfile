@@ -39,6 +39,10 @@ def test(command) {
 	echo command
 	
 	def lsls = "ls -al".execute().text
+	println(lsls)
+	
+/*	
+	def lsls = "ls -al".execute().text
 	def sb = new StringBuffer()
 	lsls.waitForProcessOutput(sb, System.err)
 	println(sb.toString())
@@ -49,6 +53,7 @@ def test(command) {
 	"git fetch --tags --progress https://github.com/mskwak/translation.git +refs/heads/*:refs/remotes/origin/*".execute()
 	
 	def after = "git rev-parse refs/remotes/origin/master^{commit}".execute().text
+*/
 }
 
 /*
