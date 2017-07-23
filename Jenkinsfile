@@ -2,6 +2,38 @@ pipeline {
     agent {
         label 'build'
     }
+/*    
+    environment {
+        BRANCH = 'develop/hibernate'
+        MVN = '/opt/maven/bin/mvn'
+    }
+*/
+    stages {
+        stage('Build') {
+            environment {
+                BRANCH = 'develop/hibernate'
+                MVN = '/opt/maven/bin/mvn'
+	   CREDENTIAL_ID = 'kdamduck77'
+	   URLL = 'https://github.com/mskwak/translation.git'
+            }
+            
+            steps {
+		checkout([$class: 'GitSCM', branches: [[name: "${BRANCH}"]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: "${CREDENTIAL_ID}", url: "${URLL}"]]])
+        		sh '"${MVN}" clean package jxr:jxr pmd:pmd pmd:cpd findbugs:findbugs checkstyle:checkstyle cobertura:cobertura -Dcobertura.report.format=xml'
+        		step([$class: 'hudson.plugins.cobertura.CoberturaPublisher', autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: '**/coverage.xml', failUnhealthy: false, failUnstable: false, maxNumberOfBuilds: 0, onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false])
+        		step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher', pattern: 'target/checkstyle-result.xml', canRunOnFailed: true,])
+        		step([$class: 'hudson.plugins.pmd.PmdPublisher', pattern: '**/target/pmd.xml', canRunOnFailed: true,])
+        		step([$class: 'hudson.plugins.findbugs.FindBugsPublisher', pattern: '**/findbugsXml.xml', canRunOnFailed: true,])
+            }
+        }
+    }
+}
+
+/*
+pipeline {
+    agent {
+        label 'build'
+    }
     stages {
         stage('Build') {
             steps {
@@ -34,6 +66,7 @@ pipeline {
         }
     }
 }
+*/
 
 def test(command) {
 	echo command
