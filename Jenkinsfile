@@ -17,7 +17,7 @@ pipeline {
 			   GIT_URL = 'https://github.com/mskwak/translation.git'
 		            }
 		            
-		            steps {
+		        steps {
 				echo pwd()
 				checkout([$class: 'GitSCM', branches: [[name: "${BRANCH}"]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: "${CREDENTIAL_ID}", url: "${GIT_URL}"]]])
 				sh '"${MVN}" clean package jxr:jxr pmd:pmd pmd:cpd findbugs:findbugs checkstyle:checkstyle cobertura:cobertura -Dcobertura.report.format=xml'
